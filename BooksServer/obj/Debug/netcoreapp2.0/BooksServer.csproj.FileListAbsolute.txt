@@ -1,0 +1,11 @@
+C:\Users\Thatsme\source\repos\BooksServer\BooksServer\bin\Debug\netcoreapp2.0\BooksServer.deps.json
+C:\Users\Thatsme\source\repos\BooksServer\BooksServer\bin\Debug\netcoreapp2.0\BooksServer.runtimeconfig.json
+C:\Users\Thatsme\source\repos\BooksServer\BooksServer\bin\Debug\netcoreapp2.0\BooksServer.runtimeconfig.dev.json
+C:\Users\Thatsme\source\repos\BooksServer\BooksServer\bin\Debug\netcoreapp2.0\BooksServer.dll
+C:\Users\Thatsme\source\repos\BooksServer\BooksServer\obj\Debug\netcoreapp2.0\BooksServer.csprojResolveAssemblyReference.cache
+C:\Users\Thatsme\source\repos\BooksServer\BooksServer\obj\Debug\netcoreapp2.0\BooksServer.csproj.CoreCompileInputs.cache
+C:\Users\Thatsme\source\repos\BooksServer\BooksServer\obj\Debug\netcoreapp2.0\BooksServer.AssemblyInfoInputs.cache
+C:\Users\Thatsme\source\repos\BooksServer\BooksServer\obj\Debug\netcoreapp2.0\BooksServer.AssemblyInfo.cs
+C:\Users\Thatsme\source\repos\BooksServer\BooksServer\bin\Debug\netcoreapp2.0\BooksServer.pdb
+C:\Users\Thatsme\source\repos\BooksServer\BooksServer\obj\Debug\netcoreapp2.0\BooksServer.dll
+C:\Users\Thatsme\source\repos\BooksServer\BooksServer\obj\Debug\netcoreapp2.0\BooksServer.pdb

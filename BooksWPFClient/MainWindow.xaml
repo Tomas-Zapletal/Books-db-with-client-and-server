@@ -1,0 +1,127 @@
+﻿<Window x:Class="BooksWPFClient.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:BooksWPFClient"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="550" Width="Auto">
+    <Window.Resources>
+        <local:ViewModel x:Key="ViewModel" />
+        <ControlTemplate x:Key="btnTemplate" TargetType="Button">
+            <Grid>
+                <Rectangle RadiusX="5" RadiusY="5" Fill="Aquamarine">
+                </Rectangle>
+                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"></ContentPresenter>
+            </Grid>
+        </ControlTemplate>
+        <Style TargetType="TextBlock">
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="FontSize" Value="13"></Setter>
+        </Style>
+        <Style x:Key="tbkStyle" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="FontSize" Value="13"></Setter>
+        </Style>
+    </Window.Resources>
+    <Grid DataContext="{StaticResource ResourceKey=ViewModel}" >
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"></ColumnDefinition>
+            <ColumnDefinition Width="Auto"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <StackPanel x:Name="pBooks" Grid.Column="0" Margin="10,10,0,0">
+           
+                    <TextBlock Text="List of books" FontSize="20" FontWeight="ExtraBold"></TextBlock>
+                    <ListView x:Name="lvBooks" Margin="0,10,0,0" Background="Transparent" 
+                              ItemsSource= "{Binding Path=Titles}" Height="400" ScrollViewer.CanContentScroll="True" SelectedItem="{Binding Path=SelectedTitle}" SelectedIndex="0">
+                        <ListView.View>
+
+                            <GridView>
+
+                                <GridViewColumn Header="ISBN" Width="120" DisplayMemberBinding="{Binding Id}" />
+                                <GridViewColumn Header="Book's title" Width="Auto" DisplayMemberBinding="{Binding BookTitle}" />
+                                <GridViewColumn Header="Edition number" Width="150"  DisplayMemberBinding="{Binding EditionNumber}" />
+                                <GridViewColumn Header="Copyright" Width="150" DisplayMemberBinding="{Binding Copyright}" />
+                            </GridView>
+
+                        </ListView.View>
+                    </ListView>
+                
+        </StackPanel>
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <StackPanel Grid.Row="0" Margin="20,0,0,0" Width="Auto">
+                <TextBlock Text="Add or Update a book" FontSize="20" FontWeight="ExtraBold"></TextBlock>
+                <StackPanel Orientation="Horizontal" Margin="0,10,0,0" >
+                    <TextBlock Text="ISBN" Width="95"></TextBlock>
+                    <TextBox x:Name="txtISBN" Margin="10,0,0,0" Width="200" Text = "{Binding ElementName=lvBooks, Path = SelectedItem.Id}"></TextBox>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                    <TextBlock Text="Book's title" Width="95"></TextBlock>
+                    <TextBox x:Name="txtBookTitle" Margin="10,0,0,0" Width="200" Text = "{Binding ElementName=lvBooks, Path = SelectedItem.BookTitle}"></TextBox>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" Margin="0,10,0,0" Width="Auto">
+                    <TextBlock Text="Edition number" Width="95"></TextBlock>
+                    <TextBox x:Name="txtEditionNumber" InputScope="Number" Margin="10,0,0,0" Width="200" Text = "{Binding ElementName=lvBooks, Path = SelectedItem.EditionNumber}"></TextBox>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                    <TextBlock Text="Copyright" Width="95"></TextBlock>
+                        <TextBox x:Name="txtCopyright" InputScope="Number" Margin="10,0,0,0" Width="200" Text = "{Binding ElementName=lvBooks, Path = SelectedItem.Copyright}"></TextBox>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                    <Button x:Name="btnNew" Template="{StaticResource btnTemplate}" Content=" Add New book " Margin="0,0,10,0" Click="btnAdd_Click"></Button>
+                    <Button x:Name="btnUpdate" Template="{StaticResource btnTemplate}" Content=" Update a book " Click="btnUpdate_Click" ></Button>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                    <TextBlock Text="Search by" Width="75"></TextBlock>
+                    <ComboBox x:Name="cbxSearchBy" Margin="10,0,0,0" Width="200" Text="Search by" IsReadOnly="True" IsEditable="True" SelectionChanged="cbxSearchBy_SelectionChanged">
+                        <ComboBoxItem IsSelected="True">title</ComboBoxItem>
+                        <ComboBoxItem>ISBN</ComboBoxItem>
+
+                        <ComboBoxItem></ComboBoxItem>
+
+                    </ComboBox>
+                </StackPanel>
+            
+            </StackPanel>
+            <StackPanel Grid.Row="1" Margin="10,0,0,0">
+                <TextBlock Text="Get or delete a book" FontSize="20" FontWeight="ExtraBold"></TextBlock>
+                <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                    <TextBlock Text="Enter search expression" Width="150"></TextBlock>
+                    <TextBox x:Name="txtSearch"  Margin="10,0,0,0" Width="100" Text="{Binding ElementName=lvBooks, Path = SelectedItem.Id}">
+                        
+                    </TextBox>
+                </StackPanel>
+
+                <StackPanel x:Name="studentDetailsPanel" Margin="10,0,0,0" Visibility="Collapsed">
+                    <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                        <TextBlock Text="Name :" Width="75"></TextBlock>
+                        <TextBlock x:Name="txbStudentName" Text="{Binding name}" Margin="10,0,0,0" Width="200"></TextBlock>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                        <TextBlock Text="Student ID : " Width="75"></TextBlock>
+                        <TextBlock x:Name="txbStudentID" Margin="10,0,0,0" Text="{Binding id}" Width="200"></TextBlock>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                        <TextBlock Text="Gender : " Width="75"></TextBlock>
+                        <TextBlock x:Name="txbGender" Margin="10,0,0,0" Text="{Binding gender}" Width="200"></TextBlock>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                        <TextBlock Text="Age : " Width="75"></TextBlock>
+                        <TextBlock x:Name="txbAge" InputScope="Number" Margin="10,0,0,0" Width="200" Text="{Binding age}"></TextBlock>
+                    </StackPanel>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                    <Button x:Name="btnSearch" Template="{StaticResource btnTemplate}" Content="Search" Margin="0,0,10,0" Click="btnSearch_Click"></Button>
+                    <Button x:Name="btnDeleteBook" Template="{StaticResource btnTemplate}" Content=" Delete a book by ISBN " Margin="0,0,10,0" Click="btnDelete_Click"></Button>
+                    <Button x:Name="btnViewAll" Template="{StaticResource btnTemplate}" Content="View all books" Margin="0,0,10,0" Click="btnViewAll_Click" ></Button>
+                </StackPanel>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Window>
