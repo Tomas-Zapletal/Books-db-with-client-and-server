@@ -57,7 +57,7 @@ namespace BooksWPFClient
 
         public string SearchText
         {
-            get { return txtSearch.Text; }
+            get { return txtSearch.Text.ToUpper(); }
         }
         public Title SelectedTitle
         {
@@ -78,7 +78,7 @@ namespace BooksWPFClient
     {
         get { return cbxSearchBy.SelectedValue.ToString().ToLower(); }
     }
-    private async void GetData()
+    private async void GetData(string searchExpression = null, string searchByProperty = null)
     {
         //Initialize HTTP Client 
         client = new HttpClient();
@@ -89,22 +89,37 @@ namespace BooksWPFClient
                 HttpResponseMessage response = await client.GetAsync("/api/titles");
                 response.EnsureSuccessStatusCode(); // Throw on error code. 
                 var responseData = await response.Content.ReadAsStringAsync();
-                JsonSerializer j = new JsonSerializer();
-                TextReader r = new StringReader(responseData);
-                JsonTextReader reader = new JsonTextReader(r);
-                j.DefaultValueHandling = DefaultValueHandling.Populate;
+                //JsonSerializer j = new JsonSerializer();
+                //TextReader r = new StringReader(responseData);
+                //JsonTextReader reader = new JsonTextReader(r);
+                //j.DefaultValueHandling = DefaultValueHandling.Populate;
 
-                titles = j.Deserialize<List<Title>>(reader);
+                //titles = j.Deserialize<List<Title>>(reader);
 
                 //j.Deserialize()
                 //j.Formatting = Formatting.Indented;
 
                 titles = JsonConvert.DeserializeObject<List<Title>>(responseData);
                 //titles = JsonConvert.DeserializeObject<List<Title>>(responseData);
-
                 vm = new ViewModel();
 
                 BindtitlesWithVMTitles();
+
+                if (searchExpression != null)
+                {
+                    if (searchByProperty.Equals("title"))
+                    {
+                        titles = titles.Where(title => title.BookTitle.StartsWith(searchExpression)).ToList<Title>();
+                        vm.Titles.Clear();
+                        BindtitlesWithVMTitles();
+                    }
+                    else
+                    {
+                        titles = titles.Where(title => title.Id.StartsWith(searchExpression)).ToList<Title>();
+                        vm.Titles.Clear();
+                        BindtitlesWithVMTitles();
+                    }
+                }
                 vm.SelectedTitle = (Title)lvBooks.SelectedItem;
                 lvBooks.ItemsSource = vm.Titles;
 
@@ -125,34 +140,33 @@ namespace BooksWPFClient
             lvBooks.ItemsSource = vm.Titles;
         }
 
-        private  void ApplySearchfilter(string searchExpression, string searchByProperty)
-    {
+    //    private  void ApplySearchfilter(string searchExpression, string searchByProperty)
+    //{
 
-        if (searchExpression != null)
-        {
-                GetData();
-            if (searchByProperty.Equals("title"))
-            {
-                titles = titles.Where(title => title.BookTitle.StartsWith(searchExpression)).ToList<Title>();
-                    vm.Titles.Clear();
-                    BindtitlesWithVMTitles();
-            }
-            else
-            {
-                    titles = titles.Where(title => title.Id.StartsWith(searchExpression)).ToList<Title>();
-                    vm.Titles.Clear();
-                    BindtitlesWithVMTitles();
-            }
-        }
-        else
-        {
-                GetData();
+    //    if (searchExpression != null)
+    //    {
+    //            GetData();
+    //        if (searchByProperty.Equals("title"))
+    //        {
+    //            titles = titles.Where(title => title.BookTitle.StartsWith(searchExpression)).ToList<Title>();
+    //                vm.Titles.Clear();
+    //                BindtitlesWithVMTitles();
+    //        }
+    //        else
+    //        {
+    //                titles = titles.Where(title => title.Id.StartsWith(searchExpression)).ToList<Title>();
+    //                vm.Titles.Clear();
+    //                BindtitlesWithVMTitles();
+    //        }
+    //    }
+    //    else
+    //    {
+    //            GetData();
 
-        }
-            lvBooks.ItemsSource = vm.Titles;
-        //this.DataSource = titles;
+    //    }
+    //        lvBooks.ItemsSource = vm.Titles;
 
-    }
+    //}
 
     private async void btnDelete_Click(object sender, RoutedEventArgs e)
     {
@@ -223,7 +237,7 @@ namespace BooksWPFClient
     {
         string searchExpression = SearchText;
         string searchByProperty = cbxSearchBy.Text;
-        ApplySearchfilter(searchExpression, searchByProperty);
+        GetData(searchExpression, searchByProperty);
     }
 
     private void cbxSearchBy_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -263,6 +277,11 @@ namespace BooksWPFClient
 
                 GetData();
             }
+        }
+
+        private void btnViewAll_Click(object sender, RoutedEventArgs e)
+        {
+            GetData();
         }
     }
 }
